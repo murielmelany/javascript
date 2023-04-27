@@ -2,29 +2,34 @@
 Al profesor le indicaron que todos los niños que en sus 2 primeras evaluaciones tuvieron una calificacion 
 "no logrado" deberian ir a clases de reforzamiento con el psicopedagogo. */
 
-// tenemos que evaluar las notas para saber si el alumno va a refozamiento
+// tenemos que confirmar que alumno cumple las condiciones para ir a refozamiento//
 
 const primeraNota = "no logrado";
 const segundaNota = "no logrado";
 
 let alumno = "";
 while (alumno != "salir") {
-    alumno = prompt("Ingrese nombre del alumno: (Ingrese salir si desea parar) ");
+    alumno = prompt("Ingrese nombre del alumno: (Ingrese salir si desea parar) ").toLowerCase();
     if (alumno === "salir") {
-        alert("Gracias,Buen dia!");
+        alert("Gracias, buen dia!");
         break;
     }
-    let primeraCalificacion = prompt("Indique logrado o no logrado para la primera calificacion");
-    let segundaCalificacion = prompt("Indique logrado o no logrado para la segunda calificacion");
 
-    if (primeraCalificacion === primeraNota && segundaCalificacion === segundaNota) {
-        alert(alumno + " SI debe ir a reforzamiento");
-    } else {
-        alert(alumno + " NO debe ir a reforzamiento");
-    }
-
+    alumnoReforzamiento();
 }
 
+function alumnoReforzamiento() {
+    let primeraCalificacion = prompt("Indique 'logrado' o 'no logrado' para la primera calificacion");
+    let segundaCalificacion = prompt("Indique 'logrado' o 'no logrado' para la segunda calificacion");
+    let resultado;
+    if (primeraCalificacion.toLowerCase() === primeraNota && segundaCalificacion.toLowerCase() === segundaNota) {
+        resultado = "El estudiante " + alumno + " SI debe ir a reforzamiento";
+    } else { 
+        resultado = "El estudiante " + alumno + " NO debe ir a reforzamiento";
+    } 
+
+    alert(resultado);
+}
 
 
 
