@@ -1,120 +1,147 @@
-/* Curso medio-mayor, Jardin "Rayito de sol" */
+/* Curso kinder, Colegio "Rayito de sol";
+Todos los alumnos que en su promedio de notas no superen 4.0 deben asistir a reforzamiento 
+El sistema pide que ingrese nombre y apellido del alumno y sus 5 calificaciones */
 
-// PROFESOR DEBE INGRESAR LOS ALUMNOS  //
 
+const promedioNotas = (cursoActual) => {
+
+    //seleccionar el alumno para mostrar el promedio
+    // Recorrer la lista para mostrar los nombres de los alumnos
+
+    let listaAlumnos = `Escriba el nombre del alumno: \n`;
+    cursoActual.forEach((al, index) => {
+        listaAlumnos = listaAlumnos + `${al.nombre} \n`
+    });
+
+    const alumnoSeleccionado = prompt(listaAlumnos);
+
+    const alumnoEncontrado = cursoActual.find((al) => {
+
+        return alumnoSeleccionado === al.nombre
+    });
+
+    if (alumnoEncontrado !== undefined) {
+
+        //con este for vamos a recorrer las notas del alumno encontrado
+
+        let acumulador = 0;
+        for (i = 0; i < 5; i++) {
+            acumulador = acumulador + alumnoEncontrado.notas[i];
+        }
+
+        alert('El Promedio del alumno es: ' + (acumulador / 5).toFixed(1));
+    } else {
+        alert('Alumno no existe')
+    }
+
+}
+
+//Aca se ingresan los datos del alumno y sus notas.
 
 let alumno = "";
 let notas = [];
 const curso = [];
 
 while (alumno != "salir") {
-    alumno = prompt("Ingrese nombre y apellido del alumno: (Ingrese salir si desea parar) ").toLowerCase();
+    alumno = prompt("Ingrese nombre y apellido del alumno: (Ingrese salir para terminar) ").toLowerCase();
 
     if (alumno === "salir") {
-        alert("Gracias, buen dia!");
+        alert("Datos almacenados");
         break;
     }
+    while (notas.length !== 5) {
+        const notaIngresada = prompt(`Ingrese las 5 notas del alumno: `);
+        if (isNaN(notaIngresada)) {
+            alert('Numero invalido')
+        } else {
+            notas.push(parseFloat(notaIngresada))
+        }
 
-    for (let i=0; i<5; i++) {
-        const notaIngresada = prompt(`Ingrese las notas del alumno ${i +1} de 5: (Ingrese salir si desea parar)`);
-        notas.push(parseInt(notaIngresada))
     }
-
-    if (notas === "salir") {
-        alert("Gracias, buen dia!");
-        break;
-    }
-
     curso.push({
         nombre: alumno,
         notas
     });
 
     notas = [];
-    
+
 }
 
 let opcion = ''
-// aqui vamos hacer el menú de interacciones
-while(opcion !== 'salir'){
-    opcion = prompt('Que opción desea ejecutar\n \t 1: Mostrar alumnos que pasaron \n \t 2: Mostrar los alumnos que se van a reforzamiento \n Escriba "salir" si desea parar');
+
+// El usuario escoge la opcion a mostrar
+
+while (opcion !== 'salir') {
+    opcion = prompt(
+        'Que opción desea ejecutar\n' +
+        '\t 1: Mostrar alumnos que pasaron \n ' +
+        '\t 2: Mostrar los alumnos que se van a reforzamiento \n ' +
+        '\t 3: Mostrar promedio del alumno \n ' +
+        'Escriba "salir" si desea parar');
     if (opcion === "salir") {
         alert("Gracias, buen dia!");
         break;
     }
 
-    switch(opcion){
+    switch (opcion) {
 
         case '1':
-            //sacar promedio de notas de cada alumno y decir si va o no a refozamiento
 
-            // recorremos el array de curso y vamos trabajando cada alumno por separado
-            for(i=0; i < curso.length ;i++){
-                // aqui se guarda el promedio acumulado
-                let promedio = 0;
+            // esta funcion filtra a los alumnos que tengan un promedio mayor o igual a 4
 
-                // se recorren las notas para sumarlas del alumno
-                for(j=0; j < 5 ; j++){
-                    promedio = curso[i].notas[j] + promedio
+            const resultadoDelFiltro = curso.filter((alumno) => {
+
+                let promedioFilter = 0;
+
+                // sumar las notas del alumno
+
+                for (j = 0; j < 5; j++) {
+                    promedioFilter = alumno.notas[j] + promedioFilter
                 }
-                // valido que si el promedio es mayor o igual a 4 no va a reforzamiento
-                if(Math.round(promedio/5) >= 4 ){
-                    console.log(`El Alumno ${curso[i].nombre} no va reforzamiento. promedio: ${Math.round(promedio/5)}`);
-                }
-            
-            }
+
+                // se hace la validacion si el promedio es mayor o igual a 4
+
+                return promedioFilter / 5 >= 4;
+            });
+            let resultadoAlert = ""
+
+            // con el array resultante del filtrado se muestran los alumnos que no van a reforzamiento
+
+            resultadoDelFiltro.forEach((alumno) => {
+
+                resultadoAlert = resultadoAlert + `El Alumno ${alumno.nombre} NO va a reforzamiento. \n`
+            });
+
+            alert(resultadoAlert);
 
             break;
-        
+
         case '2':
-            //sacar promedio de notas de cada alumno y decir si va o no va a refozamiento
 
-            // recorremos el array de curso y vamos trabajando cada alumno por separado
-            for(i=0; i < curso.length ;i++){
-                // aqui se guarda el promedio acumulado
-                let promedio = 0;
+            const resultadoDelFiltroDos = curso.filter((alumno) => {
 
-                // se recorren las notas para sumarlas del alumno
-                for(j=0; j < 5 ; j++){
-                    promedio = curso[i].notas[j] + promedio
+                let promedioFilter = 0;
+
+                for (j = 0; j < 5; j++) {
+                    promedioFilter = alumno.notas[j] + promedioFilter
                 }
-                // valido que si el promedio es menor a 4  va a reforzamiento
-                if(Math.round(promedio/5) < 4 ){
-                    console.log(`El Alumno ${curso[i].nombre} va reforzamiento. promedio: ${Math.round(promedio/5)}`);
-                }
-            }
+
+                return promedioFilter / 5 < 4;
+            });
+            let resultadoAlertDos = ""
+            resultadoDelFiltroDos.forEach((alumno) => {
+                resultadoAlertDos = resultadoAlertDos + `El Alumno ${alumno.nombre} va a reforzamiento. \n`
+            });
+
+            alert(resultadoAlertDos);
 
             break;
 
         case '3':
-            prompt('3');
+
+            promedioNotas(curso);
             break;
-        
-        default:
-            prompt('opcion no valida')
 
     }
-
 }
-
-
-// mostrar la lista de los alumnos a calificar 
-console.log(curso)
-
-function alumnoReforzamiento() {
-    let primeraCalificacion = prompt("Indique 'logrado' o 'no logrado' para la primera calificacion");
-    let segundaCalificacion = prompt("Indique 'logrado' o 'no logrado' para la segunda calificacion");
-    let resultado;
-    if (primeraCalificacion.toLowerCase() === primeraNota && segundaCalificacion.toLowerCase() === segundaNota) {
-        resultado = "El estudiante " + alumno + " SI debe ir a reforzamiento";
-    } else { 
-        resultado = "El estudiante " + alumno + " NO debe ir a reforzamiento";
-    } 
-
-    alert(resultado);
-}
-
-
-
-
 
